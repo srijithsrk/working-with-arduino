@@ -1,9 +1,4 @@
-/* 
-   Udemy Course: Crazy about Arduino - Your End-to-End Workshop - Level 2 
-   Website: https://www.udemy.com/crazy-about-arduino-your-end-to-end-workshop-level-2/
-   Description: Step-1- Matrix Keypad  
-   Author: Idan Gabrieli
-*/
+
 // ******************************************
 #include <Keypad.h>
 // ******************************************
