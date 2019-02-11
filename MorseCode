@@ -1,0 +1,59 @@
+char* letters[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", 
+"..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", 
+"--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
+
+int dotdelay = 500;	//the amount of time the LED is on for a dot
+int dashdelay = 1500;	//the time the LED is on for a dash
+int led = 2;		//identifies the pin connected to the LED
+
+void setup()
+{	
+  pinMode(led, OUTPUT);  //sets up pin 2 as output
+  Serial.begin(9600);    //allows us to use the Serial monitor for this program
+}
+void sendCode(char* sequence)  	//convert the char to the corresponding element in the array
+{
+  int i = 0;
+  while(sequence[i] != '\0')	// the symbol \0 is the end of a sentence
+  {
+    makeBlink(sequence[i]);    //call makeBlink to evaluate if the it is a dot or dash
+    i++;
+  }
+  delay(dotdelay);      //the delay between symbols in one occurrence of the array is one unit
+}
+
+void makeBlink(char dotOrDash)
+{
+  digitalWrite(led, HIGH);  //turn on the LED
+  if(dotOrDash == '.')
+  {
+    delay(dotdelay);  //500 milliseconds
+  }
+  else   //must be a dash
+  {
+    delay(dashdelay);  //1500 milliseconds
+  }
+  digitalWrite(led, LOW);  //turn off the LED
+  delay(dashdelay); //the delay between letters is 3 units
+}
+  
+void loop()
+{
+  char ch;
+  if(Serial.available()>0)  //if the input field of the serial monitor has a value
+  {
+    ch = Serial.read();    //read the first character from the input field
+    if(ch >= 'a' && ch <= 'z')  
+    {
+      sendCode(letters[ch - 'a']);  //find the index value for the letters array
+    }
+    else if (ch >= 'A' && ch <='Z')
+    {
+      sendCode(letters[ch - 'A']);
+    }
+    else if (ch==' ')  //a space between words causes a 3500 millisecond delay or 3.5 seconds
+    {
+      delay(7 * dotdelay);
+    }
+  }
+}
